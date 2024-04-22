@@ -1,25 +1,13 @@
-/*
-   taskFirst:
-   Instantiates variables using const.
-*/
-export function taskFirst () {
+export function taskFirst() {
   const task = 'I prefer const when I can.';
   return task;
 }
 
-/*
-   getLast:
-   Returns a string.
-*/
-export function getLast () {
+export function getLast() {
   return ' is okay';
 }
 
-/*
-   taskNext:
-   Instantiates variables using let.
-*/
-export function taskNext () {
+export function taskNext() {
   let combination = 'But sometimes let';
   combination += getLast();
 
