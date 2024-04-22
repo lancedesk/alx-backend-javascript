@@ -8,6 +8,14 @@ export function taskFirst () {
 }
 
 /*
+   getLast:
+   Returns a string.
+*/
+export function getLast () {
+  return ' is okay';
+}
+
+/*
    taskNext:
    Instantiates variables using let.
 */
@@ -16,12 +24,4 @@ export function taskNext () {
   combination += getLast();
 
   return combination;
-}
-
-/*
-   getLast:
-   Returns a string.
-*/
-export function getLast () {
-  return ' is okay';
 }
