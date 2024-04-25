@@ -2,16 +2,16 @@
  * Implements HolbertonCourse class:
  */
 class HolbertonCourse {
+  /**
+   * Implements HolbertonCourse class:.
+   * name - Course name.
+   * length - Period of course in months.
+   * students - Students enrolled in the cours.
+   */
   constructor(name, length, students) {
-    if (typeof name !== 'string') {
-      throw new TypeError('Name must be a string');
-    }
-    if (typeof length !== 'number') {
-      throw new TypeError('Length must be a number');
-    }
-    this._name = name;
-    this._length = length;
-    this._students = students;
+    this.name = name;
+    this.length = length;
+    this.students = students;
   }
 
   // Getter and setter for name attribute
@@ -42,8 +42,14 @@ class HolbertonCourse {
   get students() {
     return this._students;
   }
-
+  
   set students(students) {
+    if (!(students instanceof Array)) {
+      throw new TypeError('Students must be an array of strings');
+    }
+    if (!students.every((student) => typeof student === 'string')) {
+      throw new TypeError('Students must be an array of strings');
+    }
     this._students = students;
   }
 }
