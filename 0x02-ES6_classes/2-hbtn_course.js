@@ -42,7 +42,7 @@ class HolbertonCourse {
   get students() {
     return this._students;
   }
-  
+
   set students(students) {
     if (!(students instanceof Array)) {
       throw new TypeError('Students must be an array of strings');
