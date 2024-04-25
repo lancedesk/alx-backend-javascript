@@ -1,7 +1,7 @@
 /**
  * Implements Pricing class:
  */
-import Currency from './3-currency.js';
+import Currency from './3-currency';
 
 class Pricing {
   constructor(amount, currency) {
@@ -24,6 +24,9 @@ class Pricing {
   }
 
   set currency(currency) {
+    if (!(currency instanceof Currency)) {
+      throw new TypeError('currency must be a Currency');
+    }
     this._currency = currency;
   }
 
