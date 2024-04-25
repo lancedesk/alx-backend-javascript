@@ -14,9 +14,14 @@ class EVCar extends Car {
     return this._range;
   }
 
+  // Setter for range attribute
+  set range(value) {
+    this._range = value;
+  }
+
   // Method to clone the car
   cloneCar() {
-    const Species = Car[Symbol.species];
+    const Species = super.constructor[Symbol.species];
     return new Species();
   }
 }
