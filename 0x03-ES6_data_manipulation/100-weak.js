@@ -1,7 +1,14 @@
 /**
  * A WeakMap instance to track the number of times queryAPI is called for each endpoint.
  */
-export const weakMap = new WeakMap();
+
+const weakMap = new WeakMap();
+
+/**
+ * Export the weakMap
+ */
+
+export { weakMap };
 
 /**
  * Increments the count of queries for the specified endpoint in the weakMap.
@@ -16,20 +23,22 @@ export const weakMap = new WeakMap();
  */
 
 function queryAPI(endpoint) {
-  // Check if the endpoint is already tracked in the weakMap
-  if (!weakMap.has(endpoint)) {
-    // If not, initialize the count to 0
-    weakMap.set(endpoint, 0);
-  }
-
-  // Increment the count for the endpoint
-  weakMap.set(endpoint, weakMap.get(endpoint) + 1);
-
-  // Check if the count for the endpoint is >= 5
-  if (weakMap.get(endpoint) >= 5) {
-    // If yes, throw an error
-    throw new Error('Endpoint load is high');
+  // If the endpoint is already in the weakMap, increment the count by 1
+  if (weakMap.has(endpoint)) {
+    const count = weakMap.get(endpoint);
+    weakMap.set(endpoint, count + 1);
+    // If the count is >= 5, throw an error
+    if (count >= 4) {
+      throw new Error('Endpoint load is high');
+    }
+  } else {
+    // If the endpoint is not in the weakMap, initialize the count to 1
+    weakMap.set(endpoint, 1);
   }
 }
 
-export default queryAPI;
+/**
+ * Export the queryAPI function
+ */
+
+export { queryAPI };
