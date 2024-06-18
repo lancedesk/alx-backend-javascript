@@ -1,37 +1,39 @@
 #!/usr/bin/node
 
 const http = require('http');
-const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
-const url = require('url');
-
 // Include countStudents function - Counts students in a CSV file
 const countStudents = require('./3-read_file_async');
 
+// Get the database file from command line arguments
+const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
+
 // Create an HTTP server
-const app = http.createServer((req, res) => {
-  const { pathname } = url.parse(req.url, true);
-  // Check the URL path
-  if (pathname === '/') {
-    // Send "Hello Holberton School!" for the root path
-    res.write('Hello Holberton School!');
-    res.end();
-  } else if (pathname === '/students') {
-    const data = [];
+const app = http.createServer(async (req, res) => {
+  // Parse the URL
+  const { pathname } = new URL(req.url, `http://${req.headers.host}`);
 
-    data.push('This is the list of our students');
+  // Set the response header
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 
-    // Call the countStudents function and send the response
-    countStudents(DATABASE)
-      .then((data) => {
-        data.push(data);
-        res.write(data.join('\n'));
-        res.end();
-      })
-      .catch((err) => {
-        data.push(err instanceof Error ? err.message : err.toString());
-        res.write(data.join('\n'));
-        res.end();
-      });
+  // Define the message
+  const message = 'This is the list of our students';
+
+  switch (pathname) {
+    case '/':
+      res.end('Hello Holberton School!');
+      break;
+    case '/students':
+      try {
+        res.end(`${message}\n${await countStudents(DATABASE)}`);
+      } catch (error) {
+        res.statusCode = 500; // Server Error
+        res.end(`${message}\n${error.message}`);
+      }
+      break;
+    default:
+      res.statusCode = 404; // Not Found
+      res.end('404 Not Found');
+      break;
   }
 });
 
