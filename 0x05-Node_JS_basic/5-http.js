@@ -9,7 +9,7 @@ const fs = require('fs').promises;
  * @returns {Promise<void>}
 */
 
-async function countStudents(path) {
+async function countStudents (path) {
   try {
     const data = await fs.readFile(path, 'utf8');
     const students = data
@@ -32,7 +32,7 @@ async function countStudents(path) {
       console.log(
         `Number of students in ${key}: ${
           studyField[key].length
-        }. List: ${studyField[key].join(', ')}`,
+        }. List: ${studyField[key].join(', ')}`
       );
     });
   } catch (error) {
@@ -43,24 +43,27 @@ async function countStudents(path) {
 // Create an HTTP server
 const app = http.createServer(async (req, res) => {
   // Set the response header
-  res.setHeader('Content-Type', 'text/plain');
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
 
-  const message = 'This is the list of our students';
+  // Parse the URL
+  const url = new URL(req.url, `http://${req.headers.host}`);
 
-  switch (req.url) {
-    case '/':
-      res.end('Hello Holberton School!');
-      break;
-    case '/students':
-      try {
-        res.end(`${message}\n${await countStudents(process.argv[2])}`);
-      } catch (error) {
-        res.statusCode = 404;
-        res.end(`${message}\n${error.message}`);
-      }
-      break;
-    default:
-      break;
+  // Check the URL path
+  if (url.pathname === '/') {
+    // Send "Hello Holberton School!" for the root path
+    res.end('Hello Holberton School!\n');
+  } else if (url.pathname === '/students') {
+    try {
+      // Call the countStudents function and send the response
+      await countStudents(process.argv[2]);
+      res.end();
+    } catch (error) {
+      res.end('Error: Cannot load the database\n');
+    }
+  } else {
+    // Send a 404 response for other paths
+    res.writeHead(404);
+    res.end('404 Not Found\n');
   }
 });
 
