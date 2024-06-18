@@ -11,7 +11,7 @@ const PORT = 1245;
 const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
 
 // Include countStudents function - Counts students in a CSV file
-const countStudents = require('./express_count_students');
+const countStudents = require('./count_students');
 
 // Endpoint for /
 app.get('/', (req, res) => {
