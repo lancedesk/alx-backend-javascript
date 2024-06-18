@@ -1,8 +1,11 @@
 #!/usr/bin/node
 
 const http = require('http');
+// Import URL class from the url module
+const { URL } = require('url');
 // Include countStudents function - Counts students in a CSV file
 const countStudents = require('./3-read_file_async');
+const hostname = '127.0.0.1';
 
 // Get the database file from command line arguments
 const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
@@ -41,7 +44,7 @@ const app = http.createServer(async (req, res) => {
 const PORT = 1245;
 
 // Start the server and listen on the defined port
-app.listen(PORT, () => {
+app.listen(PORT, hostname, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
 });
 
