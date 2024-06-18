@@ -1,50 +1,36 @@
 #!/usr/bin/node
 
 const http = require('http');
-// Import URL class from the url module
-const { URL } = require('url');
-// Include countStudents function - Counts students in a CSV file
-const countStudents = require('./3-read_file_async');
-const hostname = '127.0.0.1';
-
+const HOSTNAME = '127.0.0.1';
+// Define the port to listen on
+const PORT = 1245;
 // Get the database file from command line arguments
 const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
 
-// Create an HTTP server
-const app = http.createServer(async (req, res) => {
-  // Parse the URL
-  const { pathname } = new URL(req.url, `http://${req.headers.host}`);
+// Include countStudents function - Counts students in a CSV file
+const countStudents = require('./count_students');
 
-  // Set the response header
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-
-  // Define the message
-  const message = 'This is the list of our students';
-
-  switch (pathname) {
-    case '/':
-      res.end('Hello Holberton School!');
-      break;
-    case '/students':
-      try {
-        res.end(`${message}\n${await countStudents(DATABASE)}`);
-      } catch (error) {
-        res.statusCode = 500; // Server Error
-        res.end(`${message}\n${error.message}`);
-      }
-      break;
-    default:
-      res.statusCode = 404; // Not Found
-      res.end('404 Not Found');
-      break;
+const app = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  if (req.url === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
+  }
+  if (req.url === '/students') {
+    res.write('This is the list of our students\n');
+    countStudents(DATABASE.toString()).then((output) => {
+      const outString = output.slice(0, -1);
+      res.end(outString);
+    }).catch(() => {
+      res.statusCode = 404;
+      res.end('Cannot load the database');
+    });
   }
 });
 
-// Define the port to listen on
-const PORT = 1245;
-
 // Start the server and listen on the defined port
-app.listen(PORT, hostname, () => {
+app.listen(PORT, HOSTNAME, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
 });
 
