@@ -17,9 +17,9 @@ function countStudents(path) {
 
     students.shift();
     console.log(`Number of students: ${students.length}`);
-	
+
     const studyField = {};
-	
+
     students.forEach((student) => {
       if (!studyField[student[3]]) studyField[student[3]] = [];
       studyField[student[3]].push(student[0]);
