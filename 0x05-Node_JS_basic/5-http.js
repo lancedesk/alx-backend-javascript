@@ -1,70 +1,36 @@
 #!/usr/bin/node
 
 const http = require('http');
-const fs = require('fs').promises;
 
-/**
- * countStudents - Counts students in a CSV file
- * @param {string} path - Path to the CSV file
- * @returns {Promise<void>}
-*/
-
-async function countStudents (path) {
-  try {
-    const data = await fs.readFile(path, 'utf8');
-    const students = data
-      .split('\n')
-      .filter((student) => student.length > 0)
-      .map((student) => student.split(','));
-
-    students.shift();
-    const studentNumber = students.length;
-    const studyField = {};
-
-    console.log(`Number of students: ${studentNumber}`);
-
-    students.forEach((student) => {
-      if (!studyField[student[3]]) studyField[student[3]] = [];
-      studyField[student[3]].push(student[0]);
-    });
-
-    Object.keys(studyField).forEach((key) => {
-      console.log(
-        `Number of students in ${key}: ${
-          studyField[key].length
-        }. List: ${studyField[key].join(', ')}`
-      );
-    });
-  } catch (error) {
-    throw new Error('Cannot load the database');
-  }
-}
+// Include countStudents function - Counts students in a CSV file
+const countStudents = require('./3-read_file_async');
+const args = process.argv.slice(2);
+const DATABASE = args[0];
 
 // Create an HTTP server
 const app = http.createServer(async (req, res) => {
-  // Set the response header
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
 
-  // Parse the URL
-  const url = new URL(req.url, `http://${req.headers.host}`);
+  const { url } = req;
 
   // Check the URL path
-  if (url.pathname === '/') {
+  if (url === '/') {
     // Send "Hello Holberton School!" for the root path
-    res.end('Hello Holberton School!\n');
-  } else if (url.pathname === '/students') {
+    res.write('Hello Holberton School!');
+  } else if (url === '/students') {
+    res.write('This is the list of our students\n');
     try {
       // Call the countStudents function and send the response
-      await countStudents(process.argv[2]);
-      res.end();
+      const students = await countStudents(DATABASE);
+      res.end(`${students.join('\n')}`);
     } catch (error) {
-      res.end('Error: Cannot load the database\n');
+      res.end(error.message);
     }
-  } else {
-    // Send a 404 response for other paths
-    res.writeHead(404);
-    res.end('404 Not Found\n');
   }
+  // Send a 404 response for other paths
+  res.statusCode = 404;
+  res.end();
 });
 
 // Define the port to listen on
