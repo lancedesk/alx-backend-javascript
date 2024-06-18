@@ -4,19 +4,14 @@
 console.log('Welcome to Holberton School, what is your name?');
 
 // Listen for user input
-process.stdin.setEncoding('utf8');
 process.stdin.on('readable', () => {
-  let input = process.stdin.read();
-  if (input !== null) {
-    // Remove newline characters from input
-    input = input.trim();
-    console.log(`Your name is: ${input}`);
-    console.log('This important software is now closing');
-    process.stdin.end();
+  const name = process.stdin.read();
+  if (name !== null) {
+    process.stdout.write(`Your name is: ${name}`);
   }
 });
 
 // Handle end event to display closing message
 process.stdin.on('end', () => {
-  console.log('This important software is now closing');
+  process.stdout.write('This important software is now closing\n');
 });
