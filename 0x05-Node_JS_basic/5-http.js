@@ -1,6 +1,7 @@
 #!/usr/bin/node
 
 const http = require('http');
+
 const HOSTNAME = '127.0.0.1';
 // Define the port to listen on
 const PORT = 1245;
