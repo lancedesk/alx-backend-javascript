@@ -6,7 +6,7 @@ const fs = require('fs').promises;
  * @returns {Promise<Object>} - Resolves to an object of arrays of first names per field.
 */
 
-function readDatabase (path) {
+function readDatabase(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8')
       .then((data) => {
