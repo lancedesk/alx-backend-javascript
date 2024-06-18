@@ -3,10 +3,10 @@ const fs = require('fs').promises;
 /**
  * Read the database asynchronously.
  * @param {string} filePath - The path to the database file.
- * @returns {Promise<Object>} - Promise that resolves to an object of arrays of first names per field.
+ * @returns {Promise<Object>} - Resolves to an object of arrays of first names per field.
 */
 
-function readDatabase(path) {
+function readDatabase (path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8')
       .then((data) => {
