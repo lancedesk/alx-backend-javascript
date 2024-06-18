@@ -6,7 +6,7 @@ class StudentsController {
    * @param {Object} req - The request object.
    * @param {Object} res - The response object.
    */
-  static async getAllStudents (req, res) {
+  static async getAllStudents(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     try {
       const data = await readDatabase(process.argv[2]);
@@ -31,7 +31,7 @@ class StudentsController {
    * @param {Object} req - The request object.
    * @param {Object} res - The response object.
    */
-  static async getAllStudentsByMajor (req, res) {
+  static async getAllStudentsByMajor(req, res) {
     res.statusCode = 200;
     const { major } = req.params;
     if (major === 'CS' || major === 'SWE') {
