@@ -11,7 +11,7 @@ const PORT = 1245;
 const DATABASE = process.argv.length > 2 ? process.argv[2] : '';
 
 // Include countStudents function - Counts students in a CSV file
-const countStudents = require('./count_students');
+const countStudents = require('./express_count_students');
 
 // Endpoint for /
 app.get('/', (req, res) => {
@@ -24,7 +24,7 @@ app.get('/students', async (req, res) => {
     const studentsData = await countStudents(DATABASE.toString());
     res.send(`This is the list of our students\n${studentsData}`);
   } catch (error) {
-    res.status(404).send('Cannot load the database');
+    res.status(404).send('This is the list of our students\nCannot load the database');
   }
 });
 
