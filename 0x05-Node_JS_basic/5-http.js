@@ -8,7 +8,7 @@ const url = require('url');
 const countStudents = require('./3-read_file_async');
 
 // Create an HTTP server
-const server = http.createServer((req, res) => {
+const app = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url, true);
   // Check the URL path
   if (pathname === '/') {
@@ -16,12 +16,11 @@ const server = http.createServer((req, res) => {
     res.write('Hello Holberton School!');
     res.end();
   } else if (pathname === '/students') {
-
     const data = [];
 
     data.push('This is the list of our students');
 
-	// Call the countStudents function and send the response
+    // Call the countStudents function and send the response
     countStudents(DATABASE)
       .then((data) => {
         data.push(data);
