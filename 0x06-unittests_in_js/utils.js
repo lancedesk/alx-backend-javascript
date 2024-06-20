@@ -14,7 +14,7 @@ const Utils = {
       return roundedA - roundedB;
     }
     if (type === 'DIVIDE') {
-      if (Math.round(b) === 0) return 'Error';
+      if (roundedA === 0) return 'Error';
       return roundedA / roundedB;
     }
   }
