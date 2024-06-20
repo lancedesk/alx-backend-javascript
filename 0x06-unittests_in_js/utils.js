@@ -9,9 +9,9 @@ const Utils = {
   calculateNumber(type, a, b) {
     switch (type) {
       case 'SUM':
-        return Math.round(a) + Math.round(b);
+        return roundedA + roundedB;
       case 'SUBTRACT':
-        return Math.round(a) - Math.round(b);
+        return roundedA - roundedB;
       case 'DIVIDE':
         if (Math.round(b) === 0) {
           return 'Error';
